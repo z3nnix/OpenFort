@@ -2,8 +2,8 @@ require 'etc'
 require 'io/console'
 
 def execute_command_as_root(command)
-  uid = Etc.getpwnam('root').uid
-  gid = Etc.getgrnam('root').gid
+  uid = Process::UID.eid
+  gid = Process::GID.eid
 
   if require_root_password?
     print '[password]: '
@@ -26,11 +26,15 @@ def execute_command_as_root(command)
 end
 
 def require_root_password?
-  return true
+  true
+  # Здесь вы можете разместить условие, когда требуется ввод пароля,
+  # например, наличие определенного файла или другой кастомной проверки
 end
 
 def check_root_password(password)
-
+  # Здесь вы можете реализовать проверку введенного пароля от root пользователя
+  # Например, можно сравнить хеш пароля с заранее сохраненным
+  # или использовать другой механизм аутентификации root пользователя
 end
 
 # Пример использования:
