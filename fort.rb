@@ -1,6 +1,11 @@
 require 'etc'
 require 'io/console'
 
+config = eval(File.read("/bin/fort.config"))
+exitcodes = [
+  "fort: Permision denied"
+]
+
 def execute_command_as_root(command)
   uid = Process::UID.eid
   gid = Process::GID.eid
@@ -9,7 +14,7 @@ def execute_command_as_root(command)
     print '[password]: '
     password = STDIN.noecho(&:gets).chomp
     unless check_root_password(password)
-      puts 'fort: Permision denied'
+      puts exitcodes[0]
       return false
     end
   end
@@ -26,20 +31,14 @@ def execute_command_as_root(command)
 end
 
 def require_root_password?
-  true
-  # Здесь вы можете разместить условие, когда требуется ввод пароля,
-  # например, наличие определенного файла или другой кастомной проверки
+  return PassRequire
 end
 
 def check_root_password(password)
-  # Здесь вы можете реализовать проверку введенного пароля от root пользователя
-  # Например, можно сравнить хеш пароля с заранее сохраненным
-  # или использовать другой механизм аутентификации root пользователя
+  if password != pass
+    puts exitcodes[0]
+  end
 end
 
-# Пример использования:
 command = ARGV[0]
 status = execute_command_as_root(command)
-
-puts "sucess" if status.success?
-puts "error" unless status.success?
