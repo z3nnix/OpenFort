@@ -1,10 +1,9 @@
 require 'etc'
 require 'io/console'
 
-config = eval(File.read("/bin/fort.config"))
-exitcodes = [
-  "fort: Permision denied"
-]
+conftext = File.read("/bin/fort.config","w")
+config = eval("#{conftext}")
+exitcode = "fort: Permision denied"
 
 def execute_command_as_root(command)
   uid = Process::UID.eid
@@ -14,7 +13,7 @@ def execute_command_as_root(command)
     print '[password]: '
     password = STDIN.noecho(&:gets).chomp
     unless check_root_password(password)
-      puts exitcodes[0]
+      puts exitcode
       return false
     end
   end
@@ -36,7 +35,7 @@ end
 
 def check_root_password(password)
   if password != pass
-    puts exitcodes[0]
+    puts exitcode
   end
 end
 
