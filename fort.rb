@@ -1,9 +1,9 @@
 require 'etc'
 require 'io/console'
 
-conftext = File.read("/bin/fort.config","w")
+conftext = File.read("/bin/fort.config", "w")
 config = eval("#{conftext}")
-exitcode = "fort: Permision denied"
+exitcode = "fort: Permission denied"
 
 def execute_command_as_root(command)
   uid = Process::UID.eid
@@ -12,6 +12,7 @@ def execute_command_as_root(command)
   if require_root_password?
     print '[password]: '
     password = STDIN.noecho(&:gets).chomp
+
     unless check_root_password(password)
       puts exitcode
       return false
@@ -21,7 +22,6 @@ def execute_command_as_root(command)
   Process.fork do
     Process::Sys.setuid(uid)
     Process::Sys.setgid(gid)
-
     exec command
   end
 
@@ -30,11 +30,11 @@ def execute_command_as_root(command)
 end
 
 def require_root_password?
-  return PassRequire
+  return PassRequire # В этой части кода необходимо указать условие, например, проверку на наличие переменной PassRequire
 end
 
 def check_root_password(password)
-  if password != pass
+  if password != pass # Аналогично, необходимо указать переменную pass или другое условие для проверки пароля
     puts exitcode
   end
 end
