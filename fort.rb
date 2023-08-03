@@ -30,11 +30,11 @@ def execute_command_as_root(command)
 end
 
 def require_root_password?
-  return PassRequire # В этой части кода необходимо указать условие, например, проверку на наличие переменной PassRequire
+  return PassRequire
 end
 
 def check_root_password(password)
-  if password != pass # Аналогично, необходимо указать переменную pass или другое условие для проверки пароля
+  if password != pass
     puts exitcode
   end
 end
