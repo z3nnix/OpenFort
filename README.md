@@ -3,7 +3,7 @@
 ## what is Fort?
 Fort is an alternative to the `sudo` command written in Ruby that fits into 43 lines of code! 
 
-> Fact: The fort is ~~better~~ smaller than Sudo by a factor of ~100 000!
+> Fact: The fort is ~~better~~ smaller than Sudo by a factor of ~10 000!
 
 
 ## Contributors
