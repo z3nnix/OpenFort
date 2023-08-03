@@ -3,7 +3,6 @@ require 'io/console'
 
 config = File.read("/bin/fort.config")
 eval(config)
-exitcode = "fort: Permission denied"
 
 def execute_command_as_root(command)
   uid = Process::UID.eid
@@ -12,17 +11,19 @@ def execute_command_as_root(command)
   if require_root_password?
     print '[password]: '
     password = STDIN.noecho(&:gets).chomp
-
-    unless check_root_password(password)
-      puts exitcode
-      return false
+    puts "\n"
+    tmp = check_root_password(password)
+    
+    if tmp != true
+ 	puts tmp
+	exit
     end
   end
 
   Process.fork do
     Process::Sys.setuid(uid)
     Process::Sys.setgid(gid)
-    exec command
+    system("#{command}")
   end
 
   _, status = Process.wait2
@@ -34,8 +35,10 @@ def require_root_password?
 end
 
 def check_root_password(password)
-  if password != pass
-    puts exitcode
+  if password != RootPass
+    return "fort: Permission denied / wrong password"
+  else
+    return true
   end
 end
 
