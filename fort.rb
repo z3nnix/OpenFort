@@ -1,8 +1,8 @@
 require 'etc'
 require 'io/console'
 
-conftext = File.read("/bin/fort.config", "w")
-config = eval("#{conftext}")
+config = File.read("/bin/fort.config")
+eval(config)
 exitcode = "fort: Permission denied"
 
 def execute_command_as_root(command)
